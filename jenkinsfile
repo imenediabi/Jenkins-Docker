@@ -1,24 +1,24 @@
 node {
     def app
 
-    stage('Nom de l'étape : ') {
+    stage('Build récupération des sources') {
         checkout scm
     }
 
-    stage('Nom de l'étape :') {
-        app = docker.build("atos06/ipiformation")
+    stage('Build de mon application') {
+        app = docker.build("imenediabi/ipiformation")
     }
 
-    stage('Nom de l'étape') {
-        docker.image('atos06/ipiformation').withRun('--rm -p 80:80 --name devops') { c ->
+    stage('Test de mon application') {
+        docker.image('imenediabi/ipiformation').withRun('--rm -p 80:80 --name devops') { c ->
         sh 'docker ps'
         sh 'docker exec devops curl localhost:80'
         sh 'echo "Tests passed"'
         }
     }
 
-    stage('Nom de l'étape : ') {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+    stage('Livraison dans DockerHub') {
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credential') {
             app.push("${env.BUILD_NUMBER}")
             app.push("1.0")
         }

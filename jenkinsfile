@@ -6,7 +6,7 @@ node {
     }
 
     stage('Build de mon application') {
-        app = docker.build("imenediabi/ipiformation")
+        app = docker.build('imenediabi/ipiformation')
     }
 
     stage('Test de mon application') {
